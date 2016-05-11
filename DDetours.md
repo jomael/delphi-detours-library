@@ -1,15 +1,15 @@
 # Introduction #
 The **Delphi Detours Library** is a library allowing you to insert and remove hook from function . It support both (x86-x64) architecture .
 
-The basic idea of this library is to replaces the prologue of the target function with the JMP (unconditional jump) instruction to the Intercepted function.
+The basic idea of this library is to replace the prologue of the target function with the JMP (unconditional jump) instruction to the Intercepted function.
 
 ## Hooking Rules : ##
 In order to run your hook correctly,you must follow this rules:
-  * Intercept procedure must have the same original procedure signature.That's mean same parameters (types) and same calling convention.
-  * When hooking Delphi Object/COM Object .The first parameter of the InterceptProc/Trampoline must be pointer to that object, that's what we call '**Self**'.
-  * In multi hooks ,each hook needs it's own NextHook/Trampoline function.
-  * When hooking a lot of functions , make sure that you are hooking inside (**BeginHooks/EndHooks**) **frame** and unhooking inside (**BeginUnHooks/EndUnHooks**)**frame**.
-  * Never try to call the original function directly inside Intercept function .Always use NextHook/Trampoline function.
+  * Intercept procedure must have the same original procedure signature.That means same parameters (types) and same calling convention.
+  * When hooking Delphi Object/COM Object .The first parameter of the InterceptProc/Trampoline must be a pointer to that object, that's what we call '**Self**'.
+  * In multi hooks, each hook needs it's own NextHook/Trampoline function.
+  * When hooking a lot of functions, make sure that you are hooking inside (**BeginHooks/EndHooks**) **frame** and unhooking inside (**BeginUnHooks/EndUnHooks**)**frame**. This will speed up hooks installation.
+  * Never try to call the original function directly inside Intercept function. Always use NextHook/Trampoline function.
 
 ## DDL functions : ##
 This library contains the following functions :
@@ -33,9 +33,9 @@ This function can hook (redirect) the TargetProc to the InterceptProc .
 
 **TargetProc :**  A pointer to the target function that you are going to hook .
 
-**InterceptProc :** A pointer to the intercept function , this one will be executed instead of the original function.
+**InterceptProc :** A pointer to the intercept function, this one will be executed instead of the original function.
 
-**Options :** Actually,there is only one option that can be used ('ST').
+**Options :** Actually, there is only one option that can be used ('ST').
   * ST:**Suspend all thread.**
 
 **Module :** Library or Module Name.
@@ -46,7 +46,7 @@ This function can hook (redirect) the TargetProc to the InterceptProc .
 
 **TargetInterface:** The interface that containts the method that you are going to hook.
 
-**MethodIndex:** Method Index inside the interface .
+**MethodIndex:** Method's Index inside the interface .
   * Zero based counting : you must start counting from **zero**.
   * Counting must be from the top to the bottom.
   * You must count all methods declared in parents interface.
@@ -65,7 +65,7 @@ Remove the registered hook from the TargetProc.
 
 **Trampoline :** A pointer to the Trampoline that was returned by the **InterceptCreate** function .It is necessary that you provide a valid parameter .
 
-**Return:** The function return the number of hook that are still alive.
+**Return:** The function returns the number of hook that are still alive.
 
 ## GetNHook ##
 ```delphi
@@ -80,7 +80,7 @@ function IsHooked(const TargetProc: Pointer): Boolean;
 Check if TargetProc is hooked.
 
 ## Speeding up DDL : ##
-Sometimes when hooking a lot of functions, DDL can take some time,because it suspend all threads when hooking and unhooking for every Hook/UnHook action.To speed things up a bit ,you could Hook/UnHook inside (**BeginHooks/EndHooks**) and (**BeginUnHooks/EndUnHooks**)**frame**.In that way DDL will suspend/resume threads only once.
+Sometimes when hooking a lot of functions, DDL can take some time,because it suspends all threads when hooking and unhooking for every Hook/UnHook action.To speed things up a bit, you could Hook/UnHook inside (**BeginHooks/EndHooks**) and (**BeginUnHooks/EndUnHooks**)**frame**. In that way DDL will suspend/resume threads only once.
 
 ## Example : ##
 <u><b>Hooking Api function:</b></u>
