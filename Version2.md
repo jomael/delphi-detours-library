@@ -13,13 +13,13 @@
 
 ## New hooking model architecture ##
 
-The new version introduce a new hooking model architecture , allowing support for multi hooks as well as single hook.
+The new version introduces a new hooking model architecture, allowing support for **multi hooks** as well as a **single hook**.
 
-Whatever , your hook is installed from you application process or via (dll,..),DDL will mange your hook to run without problems with others hooks.
+Whatever, your hook is installed from you application process or via (dll,..), DDL will mange your hook to run without problems with others hooks.
 
 ![https://dl.dropboxusercontent.com/u/99625333/imgs/DDL.png](https://dl.dropboxusercontent.com/u/99625333/imgs/DDL.png)
 
-With this new architecture , DDL guaranties:
+With this new architecture, DDL guaranties:
   * New hooks will never override valid adjacent routines.
   * A single TrampoLine function for all installed hooks.
   * The TrampoLine is as much as possible small in size.
@@ -36,12 +36,12 @@ With this new architecture , DDL guaranties:
 ## Multi Hooking ##
   * A target function can be hooked by **several hooks.**
   * Calling TrampoLine will result in calling next installed hook.
-  * The last caller for TrampoLine execute the original code.
+  * The last caller for TrampoLine executes the original code.
 
 You can think like functions overriding inside a class.
 
 ## Detecting Hook ##
-In this version , i introduced new functions to detect if a function is being hooked:
+In this version, I introduced new functions to detect if a function is being hooked:
 ```
 {Return the number of installed hooks on a function}
 function GetNHook(const TargetProc: Pointer): ShortInt;
@@ -51,14 +51,14 @@ function IsHooked(const TargetProc: Pointer): Boolean;
 ```
 
 ## Instructions Maping ##
-DDL will try to correct relative offset when it's possible, however when the new offset size is greater than 32-bits (especially on x64) it will try to map the instruction to an alternative instruction or even generate an opcodes that will acts as the original.
+DDL will try to correct relative offset when it's possible, however when the new offset size is greater than 32-bits (especially on x64) it will try to map the instruction to an alternative instruction or even generate an opcodes that will act as the original.
 
 ![https://dl.dropboxusercontent.com/u/99625333/imgs/Maping.png](https://dl.dropboxusercontent.com/u/99625333/imgs/Maping.png)
 
-This process is used only when DDL detect that executing a TrampoLine routine may fail.
+This process is used only when DDL detects that executing a TrampoLine routine may fail.
 
 ## COM object/Interface hooking support ##
-The new version provide support for hooking methods declared inside interface.
+The new version provides support for hooking methods declared inside interface.
 The hook will be installed at the top of function code implementation.
 ```
 const
@@ -126,11 +126,11 @@ end.
 ```
 
 ## Generate better opcodes ##
-In this new version , DDL generate better opcodes for branch and for nop instructions.
+In this new version ,DDL generates better opcodes for branch and for nop instructions.
 
 <u><b>Branch instructions:</b></u>
 
-DDL calculate the offset first then it decides what's the perfect branch/jump to use :
+DDL calculates the offset first then it decides what's the perfect branch/jump to use :
   1. JMP Rel8
   1. JMP Rel16 (x32 only)
   1. JMP Rel32
@@ -142,12 +142,10 @@ Using better jmp will result in a small trampoline size.
 
 <u><b>Nop instructions:</b></u>
 
-DDL use Multi Bytes Nop instructions instead of the traditional (Nop N) instructions.
+DDL uses Multi Bytes Nop instructions instead of the traditional (Nop N) instructions.
 
-The use of MultiBytesNop is determined by your CPU.
-
-if your CPU support MultiBytesNop ,DDL will use it when it's possible,Otherwise
-it use traditional Nop instructions.
+The use of MultiBytesNop is determined by your CPU. If your CPU supports MultiBytesNop, DDL will use it when it's possible,Otherwise
+it uses traditional Nop instructions.
 
 ## InstDecode Library ##
 The new InstDecode Library includes the following updates :
