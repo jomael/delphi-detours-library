@@ -6,7 +6,7 @@
   1. Many BugFix
   1. Added multi hook support.
   1. Added hook detecting feature.
-  1. Introduced instructions maping feature.
+  1. Introduced instructions mapping feature.
   1. Added COM object hooking support.
   1. Generate better opcodes.
   1. New InstDecode Library
@@ -17,7 +17,7 @@ The new version introduces a new hooking model architecture, allowing support fo
 
 Whatever, your hook is installed from you application process or via (dll,..), DDL will mange your hook to run without problems with others hooks.
 
-![https://dl.dropboxusercontent.com/u/99625333/imgs/DDL.png](https://dl.dropboxusercontent.com/u/99625333/imgs/DDL.png)
+![ddl](https://cloud.githubusercontent.com/assets/12677682/23681969/a37f09b0-0391-11e7-8c39-39d2ea2ab603.png)
 
 With this new architecture, DDL guaranties:
   * New hooks will never override valid adjacent routines.
@@ -27,11 +27,11 @@ With this new architecture, DDL guaranties:
 
 ## BugFix ##
 
-  * Fix instructions decoding related bugs.
-  * Fix Memory allocation bug.
-  * Fix Branch calculation.
-  * Fix VirtualFree bug.
-  * Fix hooking functions that have many jmp before entering main implementation.
+  * Fixed instructions decoding related bugs.
+  * Fixed memory allocation bug.
+  * Fixed branch calculation.
+  * Fixed VirtualFree bug.
+  * Fixed hooking functions that have many jmp before entering main implementation.
 
 ## Multi Hooking ##
   * A target function can be hooked by **several hooks.**
@@ -42,7 +42,7 @@ You can think like functions overriding inside a class.
 
 ## Detecting Hook ##
 In this version, I introduced new functions to detect if a function is being hooked:
-```
+```pas
 {Return the number of installed hooks on a function}
 function GetNHook(const TargetProc: Pointer): ShortInt;
 
@@ -50,17 +50,17 @@ function GetNHook(const TargetProc: Pointer): ShortInt;
 function IsHooked(const TargetProc: Pointer): Boolean;
 ```
 
-## Instructions Maping ##
+## Instructions Mapping ##
 DDL will try to correct relative offset when it's possible, however when the new offset size is greater than 32-bits (especially on x64) it will try to map the instruction to an alternative instruction or even generate an opcodes that will act as the original.
 
-![https://dl.dropboxusercontent.com/u/99625333/imgs/Maping.png](https://dl.dropboxusercontent.com/u/99625333/imgs/Maping.png)
+![map](https://cloud.githubusercontent.com/assets/12677682/23681981/b4e2cd04-0391-11e7-9f11-21885dbaa498.png)
 
 This process is used only when DDL detects that executing a TrampoLine routine may fail.
 
 ## COM object/Interface hooking support ##
 The new version provides support for hooking methods declared inside interface.
 The hook will be installed at the top of function code implementation.
-```
+```pas
 const
   IID_MyInterface = '{569B8AF2-0C44-4AE4-827D-56FE49367F24}';
 
@@ -74,8 +74,8 @@ type
     procedure ShowMsg(const Msg: string);
   end;
 
-var 
-	FMyInterface: IMyInterface; 
+var
+  FMyInterface: IMyInterface; 
 	
 { TMyObject }
 
@@ -93,7 +93,8 @@ end;
 @Trampo_MyInterface_ShowMsg := InterceptCreate(FMyInterface, 3, @MyInterface_ShowMsg_Hook);
 
 ```
-```
+The snippet below, shown how to hook COM object:
+```pas
 {Simple example showing how to hook COM object }
 var
   { First parameter must be Self! }
@@ -126,7 +127,7 @@ end.
 ```
 
 ## Generate better opcodes ##
-In this new version ,DDL generates better opcodes for branch and for nop instructions.
+In this new version, DDL generates better opcodes for branch and for nop instructions.
 
 <u><b>Branch instructions:</b></u>
 
@@ -142,9 +143,9 @@ Using better jmp will result in a small trampoline size.
 
 <u><b>Nop instructions:</b></u>
 
-DDL uses Multi Bytes Nop instructions instead of the traditional (Nop N) instructions.
+DDL uses multi-bytes Nop instructions instead of the traditional (Nop N) instructions.
 
-The use of MultiBytesNop is determined by your CPU. If your CPU supports MultiBytesNop, DDL will use it when it's possible,Otherwise
+The use of multi-bytes nop is determined by your CPU. If your CPU supports it, DDL will use it when it's possible. Otherwise
 it uses traditional Nop instructions.
 
 ## InstDecode Library ##
