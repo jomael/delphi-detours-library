@@ -1,6 +1,6 @@
 # Introduction #
 
-The **InstDecode Library** is a library allowing decoding intel instructions . It support both x86-32bit and x86-64bit architectures and provide an easy way to  disassembler opcodes (without displaying opcodes mnemonics).
+The **InstDecode Library** is a library allowing decoding intel instructions . It supports both x86-32bit and x86-64bit architectures and provides an easy way to  disassembler opcodes (without displaying opcodes mnemonics).
 
 ## Features : ##
   * 32bit & 64bit architectures support.
@@ -8,15 +8,15 @@ The **InstDecode Library** is a library allowing decoding intel instructions . I
   * Faster instructions decoding.
   * Small in size (the size of the compiled "InstDecode.dcu" is about 30 kb) .
   * One,Two,Three bytes opcodes escape support.
-  * VEX (Two and Three bytes) decoding support.
-  * Calculating Branch destination address.
+  * VEX (two and three bytes) decoding support.
+  * Calculating branch destination address.
   * ...
 
 ## DecodeInst function : ##
 ```
 function DecodeInst(PInst: PInstruction): ShortInt;
 ```
-This is the main function for this library .It can decode instructions , and retrieve useful information about the instruction that was decoded such as :
+This is the main function for this library .It can decode instructions, and retrieve useful information about the instruction that was decoded such as :
   * Instruction length.
   * OpCode value .
   * Displacement value .
@@ -28,10 +28,10 @@ This is the main function for this library .It can decode instructions , and ret
 ### Params: ###
 Only one parameter **PInst.**
 
-**PInst :** Pointer to TInstruction structure.It contains the information returned by the **DecodeInst function** .
+**PInst :** Pointer to ```TInstruction``` structure. It contains the information returned by the **DecodeInst function** .
 
 ### TInstruction Structure : ###
-```
+```pas
 TModRM = record
     iMod: Byte; { ModRm.Mod Field }
     Reg: Byte; { ModRm.Reg Field }
@@ -148,7 +148,7 @@ TModRM = record
 ### Example : ###
 Here is a sample example showing how to use this library to decode instructions.
 This example will illustrates all instructions used in the "Foo function".
-```
+```pas
 uses
   System.SysUtils,
   InstDecode;
